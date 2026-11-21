@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тейп по зонам тела</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@600;700&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: справочник одной колонкой; меню зон, сводная таблица, затем карточки схем: рисунок + пошаговый текст */
+:root{--bg:#f3f5f2;--paper:#ffffff;--fg:#1f2b27;--muted:#5b6964;--line:#d3dbd7;--accent:#1d6b61;--chip:#e3ece8;--warn:#a4482c;--warn-bg:#fbeee8;--fig:#fffdf8;--ok:#2c6e3a;--ok-bg:#e2f0e3;--mid:#8a5a00;--mid-bg:#fbefd5;
+--display:"Alegreya",Georgia,serif;--body:"Alegreya Sans","Segoe UI",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--paper:#1a2220;--fg:#e3ebe7;--muted:#9fb2ab;--line:#2f3d38;--accent:#6cc7b9;--chip:#24312d;--warn:#f0a084;--warn-bg:#2e1f1a;--fig:#fffdf8;--ok:#8fd49b;--ok-bg:#1d3022;--mid:#f0c46a;--mid-bg:#33290f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121816;--paper:#1a2220;--fg:#e3ebe7;--muted:#9fb2ab;--line:#2f3d38;--accent:#6cc7b9;--chip:#24312d;--warn:#f0a084;--warn-bg:#2e1f1a;--fig:#fffdf8;--ok:#8fd49b;--ok-bg:#1d3022;--mid:#f0c46a;--mid-bg:#33290f;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(2rem,5vw,2.8rem)}h2{font-size:1.6rem}h3{font-size:1.25rem}
+p{margin:0;max-width:68ch}ul,ol{margin:0;padding-left:1.25em;display:grid;gap:6px}
+a{color:var(--accent)}
+.lead{color:var(--muted);font-size:1.1rem}
+nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;padding-block:10px;margin-block:-10px;border-bottom:1px solid var(--line)}
+nav.bar a{text-align:center;padding:7px 0;font-size:.84rem;white-space:nowrap}
+@media (min-width:760px){nav.bar{grid-template-columns:repeat(9,minmax(0,1fr))}}
+nav.bar::-webkit-scrollbar{display:none}
+nav.bar a{flex:0 0 auto}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
+.zone,article,#pravila,#svodka{scroll-margin-top:72px}
+.who{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.badge{display:inline-block;font-size:.85rem;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.badge.self{background:var(--ok-bg);color:var(--ok)}.badge.hard{background:var(--mid-bg);color:var(--mid)}.badge.help{background:var(--warn-bg);color:var(--warn)}
+.bnote{color:var(--muted);font-size:.92rem}
+nav a{background:var(--chip);color:var(--fg);text-decoration:none;padding:6px 14px;border-radius:999px;font-weight:500}
+nav a:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.rules>*{min-width:0}
+.warnbox{background:var(--warn-bg);border:1px solid var(--warn);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.warnbox h3{color:var(--warn)}
+.tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:500;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase}
+.zone{display:grid;gap:18px;scroll-margin-top:12px}
+.zone>h2{border-bottom:2px solid var(--accent);padding-bottom:6px}
+article{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:minmax(260px,5fr) 7fr;gap:20px;scroll-margin-top:12px}
+article>*{min-width:0}
+@media (max-width:720px){article{grid-template-columns:1fr}}
+.wide{grid-template-columns:1fr}.wide .fig{max-width:760px;justify-self:center;width:100%}
+.fig{background:var(--fig);border-radius:10px;padding:8px;align-self:start}
+.fig svg{width:100%;height:auto;display:block}
+.txt{display:grid;gap:12px;align-content:start}
+.k{font-size:.82rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+.pill{background:var(--chip);border-radius:10px;padding:8px 10px;display:grid;gap:2px}
+.no{color:var(--warn)}
+
+.fig .skin{fill:#f3e3d5;stroke:#c9ad98;stroke-width:2}.fig .bone,.fig .bone2{fill:#fbf6ea;stroke:#9c8a70;stroke-width:1.6}
+.fig .ribl{stroke:#c3b394;stroke-width:1.3;fill:none}.fig .mus{fill:rgba(200,95,85,.22);stroke:#b9675c;stroke-width:1.5}
+.fig .tend{stroke:#c98a80;stroke-width:1.2}.fig .lig{stroke:#8a7a62;stroke-width:1.6;stroke-dasharray:5 3;fill:none}
+.fig .gap{fill:rgba(230,150,40,.35)}.fig .lead{stroke:#3b4844;stroke-width:1;fill:none}
+.fig .lbl{font:12px "Alegreya Sans",Arial,sans-serif;fill:#22302b}.fig .lbs{font:10.5px "Alegreya Sans",Arial,sans-serif;fill:#5d6b66}
+.fig .lbr{font:bold 11px "Alegreya Sans",Arial,sans-serif;fill:#a4482c}.fig .pc{fill:#a4482c;font:bold 11px "Alegreya Sans",Arial,sans-serif}
+.fig .dot{fill:#d2452c}.fig .tp{stroke:rgba(47,143,131,.62);stroke-width:15;stroke-linecap:round;fill:none}
+.fig .tps{stroke:rgba(47,143,131,.62);stroke-width:8;stroke-linecap:round;fill:none}.fig .an{stroke:#1d5d55;stroke-width:15;stroke-linecap:round}
+.fig .n circle{fill:#e2703a}.fig .n text{fill:#fff;font:bold 11px Arial,sans-serif;text-anchor:middle}
+.fig .faint{opacity:.75}.fig .ln{stroke:#c9ad98;stroke-width:1.5;fill:none}.fig .node{fill:#7a9a3a}.fig .base{fill:#1d5d55}
+.fig .tail{stroke:rgba(199,106,138,.75);stroke-width:5;stroke-linecap:round;fill:none}
+.fig .tailf{stroke:rgba(199,106,138,.35);stroke-width:5;stroke-linecap:round;fill:none;stroke-dasharray:6 5}
+.fig .vein{stroke:#7b4fa0;stroke-width:1.6;fill:none}.fig .arr{stroke:#2b6fb0;stroke-width:1.6;fill:none}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.95rem}
+.sw{display:inline-block;width:28px;height:10px;border-radius:5px;vertical-align:middle;margin-right:6px}
+</style>
+</head><body>
+
+<main class="wrap">
+<header style="display:grid;gap:12px"><h1>Тейп по зонам тела</h1>
+<p class="lead">Все схемы кинезиотейпа в одном месте: от чего каждая, в какой позе клеить, куда класть основание и хвосты, с каким натяжением и сколько носить. Тейп помогает, но не лечит сам: диастаз сводят упражнения на глубокие мышцы, отёки уходят от движения.</p>
+</header>
+<nav class="bar" aria-label="Зоны"><a href="#zhivot">Живот</a><a href="#spina">Спина</a><a href="#ruki">Руки</a><a href="#nogi">Ноги</a><a href="#grud">Декольте</a><a href="#sheya">Шея</a><a href="#lico">Лицо</a><a href="#pravila">Правила</a><a href="#svodka">Таблица</a></nav>
+<section class="panel" id="svodka"><h2>Что от чего и сколько носить</h2><div class="tbl"><table><thead><tr><th>Схема</th><th>От чего</th><th>Носить</th><th>Кто клеит</th></tr></thead><tbody><tr><td><a href="#poperechnye">Живот: поперечные</a></td><td>диастаз</td><td>3–5 дней</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#krest">Живот: крест X</a></td><td>поддержка живота при нагрузке</td><td>3–5 дней</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#shnurovka">Живот: шнуровка</a></td><td>широкий диастаз</td><td>3–5 дней</td><td><span class="badge hard">Сложно одной</span></td></tr><tr><td><a href="#veer-zhivot">Живот: веер</a></td><td>отёк низа живота</td><td>3–5 дней</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#spina">Лопатки</a></td><td>сутулость, боль между лопатками</td><td>3–5 дней</td><td><span class="badge help">Только с помощником</span></td></tr><tr><td><a href="#spina">Поясница</a></td><td>усталость, боль в пояснице</td><td>3–5 дней</td><td><span class="badge help">Только с помощником</span></td></tr><tr><td><a href="#ruki">Руки и плечи</a></td><td>отёк рук и кистей</td><td>3–5 дней</td><td><span class="badge hard">Сложно одной</span></td></tr><tr><td><a href="#bedra">Бёдра</a></td><td>отёк, «корка» на время</td><td>3–5 дней</td><td><span class="badge hard">Сложно одной</span></td></tr><tr><td><a href="#ikry">Икры</a></td><td>вечерний отёк</td><td>3–5 дней</td><td><span class="badge help">Только с помощником</span></td></tr><tr><td><a href="#dekolte">Декольте</a></td><td>отёк верха груди</td><td>3–5 дней</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#sheya">Шея веером</a></td><td>отёк шеи и подбородка</td><td>ночь – 2 дня</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#venera">Кольца Венеры</a></td><td>складки шеи</td><td>на ночь</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#lico-limfa">Лицо: лимфа</a></td><td>утренний отёк лица</td><td>на ночь</td><td><span class="badge self">Можно самой</span></td></tr><tr><td><a href="#lico-kosmetika">Лицо: косметика</a></td><td>мимические морщины</td><td>на ночь</td><td><span class="badge self">Можно самой</span></td></tr></tbody></table></div><p style="color:var(--muted)">После 3–5 дней носки перерыв 1–2 дня. Лицо и кольца Венеры 3–4 ночи в неделю. Одновременно лучше не больше 2–3 зон: это осторожность, а не запрет. Чем больше клея на коже, тем выше шанс раздражения, и если оно появится, непонятно, от какой зоны. И так проще понять, какая схема вам реально помогает.</p></section>
+<section class="panel" id="pravila"><h2>Общие правила</h2>
+<div class="legend"><span><i class="sw" style="background:#1d5d55"></i>основание или якорь, 0%</span><span><i class="sw" style="background:rgba(47,143,131,.7)"></i>рабочая полоса с натяжением</span><span><i class="sw" style="background:rgba(199,106,138,.8)"></i>лимфатические хвосты, 0–15%</span><span><i class="sw" style="background:#7a9a3a;width:10px"></i>лимфоузлы</span><span><i class="sw" style="background:#e2703a;width:10px"></i>порядок наклейки</span></div>
+<div class="rules">
+<div class="pill"><span class="k">Как резать ленту 5 см</span><ul><li>Живот, крест, шнуровка, спина: полоса целая, 5 см.</li><li>Лимфа на теле: вдоль на 4 хвоста по 1,2 см, основание 4–5 см не резать.</li><li>Шея: половина ленты, 2,5 см. Лицо: тонкий тейп для лица или полоски 0,5–1 см.</li><li>Режьте прямо через бумажную подложку. Все уголки скруглить.</li></ul></div>
+<div class="pill"><span class="k">Что значит натяжение</span><ul><li>0%: снять подложку и просто положить.</li><li>10–15%: чуть-чуть потянуть, почти положить.</li><li>25–50%: потянуть на четверть или половину того, на сколько лента вообще растягивается. Не до упора.</li><li>Концы любой полосы всегда без натяжения.</li></ul></div>
+<div class="pill"><span class="k">Подготовка и уход</span><ul><li>Кожа чистая, сухая, без крема. Волоски сбрить за день.</li><li>В первый раз кусочек на 24 часа, проверить аллергию.</li><li>После наклейки растереть ладонью 20 секунд.</li><li>Душ можно, потом промокнуть, феном не сушить.</li><li>Снимать медленно, по росту волос, придерживая кожу; можно смочить маслом.</li></ul></div>
+</div>
+<div class="warnbox"><h3>Когда не клеить и снять сразу</h3><ul><li>Зуд, жжение, пузыри, покраснение больше часа после снятия.</li><li>Ранки, сыпь, прыщи, свежие швы, после пилинга и ретинола (лицо).</li><li><b>Левая нога:</b> не на варикозный узел и звёздочки, сначала флеболог.</li><li><b>Пока кормите:</b> не на грудь и ареолу; уплотнение или боль в груди: снять, к врачу или Hebamme.</li><li>Внезапный отёк одной руки или ноги с болью, покраснением, жаром: к врачу в тот же день.</li><li>Бугорок у пупка при напряжении: сначала к врачу.</li></ul></div>
+</section>
+<section class="zone" id="zhivot"><h2>Живот</h2>
+<article id="tochki" class="wide"><div class="fig"><svg role="img" viewBox="0 0 600 490">
+<g transform="translate(100,0)">
+ <path class="skin" d="M90 20 C85 90 100 160 98 210 C96 260 60 300 58 360 C56 410 75 450 95 480 L305 480 C325 450 344 410 342 360 C340 300 304 260 302 210 C300 160 315 90 310 20 Z"/>
+ 
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+<g transform="translate(400,0) scale(-1,1)">
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+</g>
+ <path class="gap" d="M196 84 L191 250 L197 432 L203 432 L209 250 L204 84 Z"/>
+ <rect class="bone" x="192" y="20" width="16" height="52" rx="3"/><path class="bone" d="M194 72 L206 72 L200 90 Z"/>
+ <rect class="bone" x="189" y="428" width="22" height="30" rx="6"/>
+ <circle cx="200" cy="250" r="6" fill="#b08a72"/>
+</g>
+<g class="dot"><circle cx="300" cy="88" r="4.5"/><circle cx="370" cy="160" r="4.5"/><circle cx="206" cy="182" r="4.5"/><circle cx="212" cy="332" r="4.5"/><circle cx="300" cy="445" r="4.5"/><circle cx="420" cy="287" r="4.5"/><circle cx="300" cy="250" r="4.5"/></g>
+<path class="lead" d="M300 88 L420 60 L592 60 M370 160 L440 130 L592 130 M300 250 L592 250 M420 287 L470 300 L592 300 M300 445 L420 450 L592 450"/>
+<text class="lbl" x="592" y="54" text-anchor="end">① Мечевидный отросток</text><text class="lbs" x="592" y="75" text-anchor="end">твёрдый кончик внизу грудины</text>
+<text class="lbl" x="592" y="124" text-anchor="end">② Рёберная дуга</text><text class="lbs" x="592" y="145" text-anchor="end">нижний край рёбер</text>
+<text class="lbl" x="592" y="244" text-anchor="end">③ Пупок</text>
+<text class="lbl" x="592" y="294" text-anchor="end">④ Гребень таза</text><text class="lbs" x="592" y="315" text-anchor="end">верх тазовой кости на боку</text>
+<text class="lbl" x="592" y="444" text-anchor="end">⑥ Лобковая кость</text>
+<path class="lead" d="M206 182 L150 190 L8 190 M212 332 L150 340 L8 340 M250 140 L8 140 M300 210 L120 230 L8 230 M250 385 L8 395"/>
+<text class="lbl" x="8" y="184">Концы нижних рёбер</text>
+<text class="lbl" x="8" y="334">⑤ Тазовая косточка</text><text class="lbs" x="8" y="355">острый выступ спереди</text>
+<text class="lbl" x="8" y="134">Прямая мышца живота</text>
+<text class="lbl" x="8" y="224">Щель (диастаз)</text><text class="lbs" x="8" y="245">белая линия</text>
+<text class="lbl" x="8" y="389">Паховая складка</text><text class="lbs" x="8" y="410">на неё тейп не клеить</text>
+</svg></div><div class="txt"><h3>Живот: найти точки на себе</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Перед любой схемой на живот. Ориентируйтесь по костям, а не по пупку: после родов пупок стоя может смотреть вниз или в сторону, кости не смещаются.</p></div>
+<div><span class="k">Что нужно</span><p>Ничего, только пальцы.</p></div>
+<div><span class="k">Поза</span><p>Лёжа на спине, колени согнуты, стопы на полу. Лёжа мягкий живот уходит назад и всё встаёт на место.</p></div>
+<div><span class="k">Как клеить</span><ol><li><b>Мечевидный отросток:</b> ведите пальцем вниз по середине груди до твёрдого кончика грудины.</li><li><b>Рёберная дуга:</b> от этого кончика пальцы идут вниз и в стороны по краю рёбер, перевёрнутой буквой V.</li><li><b>Тазовые косточки:</b> руки «в боки», пальцы скользят вперёд и вниз до острого выступа, примерно на ладонь ниже пупка.</li><li><b>Лобковая кость:</b> твёрдая кость в самом низу живота.</li><li><b>Середина живота</b> это линия от кончика грудины до лобковой кости.</li><li><b>Прямые мышцы и щель:</b> приподнимите голову, как в начале скручивания. Напрягутся два вертикальных валика, ямка между ними и есть диастаз. Посчитайте, сколько пальцев помещается выше пупка, на уровне и ниже.</li></ol></div>
+<span class="k">Натяжение</span><span>—</span></div><div class="pill"><span class="k">Сколько носить</span><span>—</span></div></div>
+<div><span class="k no">Не клеить</span><p>Бугорок, который выпирает у пупка при напряжении, или щель шире 2–3 пальцев: сначала покажитесь физиотерапевту или гинекологу.</p></div></div></article>
+<article id="poperechnye"><div class="fig"><svg role="img" viewBox="40 60 320 380"><g class="faint">
+ <path class="skin" d="M90 20 C85 90 100 160 98 210 C96 260 60 300 58 360 C56 410 75 450 95 480 L305 480 C325 450 344 410 342 360 C340 300 304 260 302 210 C300 160 315 90 310 20 Z"/>
+ 
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+<g transform="translate(400,0) scale(-1,1)">
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+</g>
+ <path class="gap" d="M196 84 L191 250 L197 432 L203 432 L209 250 L204 84 Z"/>
+ <rect class="bone" x="192" y="20" width="16" height="52" rx="3"/><path class="bone" d="M194 72 L206 72 L200 90 Z"/>
+ <rect class="bone" x="189" y="428" width="22" height="30" rx="6"/>
+ <circle cx="200" cy="250" r="6" fill="#b08a72"/>
+</g>
+<line class="tp" x1="126" y1="292" x2="274" y2="292"/><line class="an" x1="126" y1="292" x2="142" y2="292"/><line class="an" x1="258" y1="292" x2="274" y2="292"/>
+<line class="tp" x1="112" y1="208" x2="288" y2="208"/><line class="an" x1="112" y1="208" x2="128" y2="208"/><line class="an" x1="272" y1="208" x2="288" y2="208"/>
+<line class="tp" x1="112" y1="250" x2="288" y2="250"/><line class="an" x1="112" y1="250" x2="128" y2="250"/><line class="an" x1="272" y1="250" x2="288" y2="250"/>
+<ellipse cx="200" cy="250" rx="8" ry="9" fill="#f3e3d5" stroke="#1d5d55" stroke-width="1.2" stroke-dasharray="2 2"/><circle cx="200" cy="250" r="4.5" fill="#b08a72"/>
+<g class="n"><circle cx="106" cy="292" r="10"/><text x="106" y="296">1</text><circle cx="92" cy="208" r="10"/><text x="92" y="212">2</text><circle cx="92" cy="250" r="10"/><text x="92" y="254">3</text></g>
+<text class="pc" x="168" y="318">25–50%</text>
+</svg></div><div class="txt"><h3>Живот: поперечные полосы с дырочкой</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Диастаз. Полосы стягивают края прямых мышц к середине и напоминают держать живот подтянутым. Полоса через пупок поддерживает самое широкое место щели.</p></div>
+<div><span class="k">Что нужно</span><p>3 целые полосы ленты 5 см по 20–25 см (на всю ширину живота от бока до бока). В средней полосе вырежьте посередине овал 2–3 см под пупок. Уголки скруглить.</p></div>
+<div><span class="k">Поза</span><p>Лёжа на спине, колени согнуты. Перед каждой полосой выдох и мягко втянуть пупок к позвоночнику.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Снимите подложку только с одного конца, 3–4 см. Приклейте этот якорь на правый бок, снаружи от прямой мышцы, без натяжения.</li><li>Свободной рукой сдвиньте мягкие ткани и мышцы живота от левого бока к центру и держите.</li><li>Снимайте подложку дальше и ведите полосу через середину живота, растянув её на 25–50%.</li><li>Последние 3–4 см положите на левый бок без натяжения.</li><li>Разотрите полосу ладонью 20 секунд, клей схватывается от тепла.</li><li><b>Порядок:</b> 1) на 2 пальца ниже пупка, выше тазовых косточек; 2) на 2 пальца выше пупка, ниже края рёбер; 3) через пупок, дырочка точно на пупке.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>Якоря 0%, середина 25–50%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Ранки, сыпь, грыжа у пупка, твёрдый болезненный живот.</p></div></div></article>
+<article id="krest"><div class="fig"><svg role="img" viewBox="40 40 320 420"><g class="faint">
+ <path class="skin" d="M90 20 C85 90 100 160 98 210 C96 260 60 300 58 360 C56 410 75 450 95 480 L305 480 C325 450 344 410 342 360 C340 300 304 260 302 210 C300 160 315 90 310 20 Z"/>
+ 
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+<g transform="translate(400,0) scale(-1,1)">
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+</g>
+ <path class="gap" d="M196 84 L191 250 L197 432 L203 432 L209 250 L204 84 Z"/>
+ <rect class="bone" x="192" y="20" width="16" height="52" rx="3"/><path class="bone" d="M194 72 L206 72 L200 90 Z"/>
+ <rect class="bone" x="189" y="428" width="22" height="30" rx="6"/>
+ <circle cx="200" cy="250" r="6" fill="#b08a72"/>
+</g>
+<line class="tp" x1="122" y1="165" x2="272" y2="314"/><line class="an" x1="122" y1="165" x2="133" y2="176"/><line class="an" x1="261" y1="303" x2="272" y2="314"/>
+<line class="tp" x1="278" y1="165" x2="128" y2="314"/><line class="an" x1="278" y1="165" x2="267" y2="176"/><line class="an" x1="139" y1="303" x2="128" y2="314"/>
+<g class="n"><circle cx="104" cy="152" r="10"/><text x="104" y="156">1</text><circle cx="296" cy="152" r="10"/><text x="296" y="156">2</text></g>
+<text class="pc" x="62" y="230">25–50%</text>
+</svg></div><div class="txt"><h3>Живот: крест X</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Общая поддержка всего живота, когда много ходите и носите Мишу. Можно вместо поперечных или поверх них.</p></div>
+<div><span class="k">Что нужно</span><p>2 целые полосы по 25–30 см, уголки скруглить.</p></div>
+<div><span class="k">Поза</span><p>Лёжа на спине, колени согнуты, на выдохе с подтянутым пупком.</p></div>
+<div><span class="k">Как клеить</span><ol><li><b>Полоса 1.</b> Якорь 3–4 см без натяжения на правых нижних рёбрах сбоку, прямо на рёберной дуге.</li><li>Рукой сдвиньте живот к центру. Ведите полосу наискосок через пупок с натяжением 25–50%.</li><li>Конец кладите без натяжения на 2 пальца выше и внутрь от левой тазовой косточки. Не на саму кость и не в паховую складку.</li><li><b>Полоса 2.</b> Так же от левых рёбер к правой тазовой косточке. Полосы пересекаются у пупка.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>Концы 0%, середина 25–50%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Как у всех схем живота.</p></div></div></article>
+<article id="shnurovka"><div class="fig"><svg role="img" viewBox="40 60 320 380"><g class="faint">
+ <path class="skin" d="M90 20 C85 90 100 160 98 210 C96 260 60 300 58 360 C56 410 75 450 95 480 L305 480 C325 450 344 410 342 360 C340 300 304 260 302 210 C300 160 315 90 310 20 Z"/>
+ 
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+<g transform="translate(400,0) scale(-1,1)">
+ <path class="bone" d="M92 20 L96 120 Q98 165 106 182 Q140 150 168 112 Q186 88 196 80 L200 88 L200 20 Z"/>
+ <path class="ribl" d="M95 60 Q140 70 196 40 M96 95 Q140 100 190 66 M98 135 Q130 130 172 100"/>
+ <path class="bone" d="M60 330 Q58 300 72 288 Q92 276 106 292 Q114 306 112 332 Q110 350 122 372 L118 392 Q90 400 74 380 Q62 360 60 330 Z"/>
+ <path class="bone" d="M122 380 Q150 405 190 430 L190 456 Q150 440 116 405 Z"/>
+ <path class="mus" d="M196 84 L191 250 L197 432 L170 432 Q142 330 134 245 Q132 150 150 90 Z"/>
+ <path class="tend" d="M146 125 L195 125 M137 178 L193 178 M134 232 L191 232"/>
+ <path class="lig" d="M112 334 Q150 395 188 432"/>
+</g>
+ <path class="gap" d="M196 84 L191 250 L197 432 L203 432 L209 250 L204 84 Z"/>
+ <rect class="bone" x="192" y="20" width="16" height="52" rx="3"/><path class="bone" d="M194 72 L206 72 L200 90 Z"/>
+ <rect class="bone" x="189" y="428" width="22" height="30" rx="6"/>
+ <circle cx="200" cy="250" r="6" fill="#b08a72"/>
+</g>
+<line class="tp" x1="145" y1="148" x2="145" y2="345" style="stroke:rgba(90,110,160,.55)"/><line class="tp" x1="255" y1="148" x2="255" y2="345" style="stroke:rgba(90,110,160,.55)"/>
+<line class="tp" x1="147" y1="275" x2="253" y2="325"/><line class="tp" x1="147" y1="325" x2="253" y2="275"/><line class="tp" x1="147" y1="223" x2="253" y2="273"/><line class="tp" x1="147" y1="273" x2="253" y2="223"/><line class="tp" x1="147" y1="171" x2="253" y2="221"/><line class="tp" x1="147" y1="221" x2="253" y2="171"/><ellipse cx="200" cy="250" rx="8" ry="9" fill="#f3e3d5" stroke="#1d5d55" stroke-width="1.2" stroke-dasharray="2 2"/><circle cx="200" cy="250" r="4.5" fill="#b08a72"/>
+<g class="n"><circle cx="145" cy="132" r="10"/><text x="145" y="136">1</text><circle cx="255" cy="132" r="10"/><text x="255" y="136">2</text>
+<circle cx="276" cy="300" r="10"/><text x="276" y="304">3</text><circle cx="276" cy="248" r="10"/><text x="276" y="252">4</text><circle cx="276" cy="196" r="10"/><text x="276" y="200">5</text></g>
+<text class="pc" x="54" y="250">0–10%</text><text class="pc" x="290" y="228">25–50%</text>
+</svg></div><div class="txt"><h3>Живот: шнуровка</h3><div class="who"><span class="badge hard">Сложно одной</span><span class="bnote">кресты удобнее клеит второй человек, пока вы держите мышцы</span></div>
+<div><span class="k">От чего</span><p>Диастаз, особенно если щель широкая и тянется от рёбер до низа живота. Держит щель по всей длине. Одной клеить неудобно, лучше с помощником.</p></div>
+<div><span class="k">Что нужно</span><p>2 целые полосы по 25–30 см на вертикальные и 6 полос по 15–18 см на кресты. В крест на уровне пупка вырежьте дырочку.</p></div>
+<div><span class="k">Поза</span><p>Лёжа на спине, колени согнуты, на выдохе.</p></div>
+<div><span class="k">Как клеить</span><ul><li><b>1–2. Вертикальные:</b> по наружному краю каждой прямой мышцы, от нижних рёбер вниз. Нижний конец на 2 пальца выше паховой складки, внутри от тазовой косточки. Кладите почти без натяжения. Это основа, к ней будут крепиться кресты.</li><li><b>3. Нижний крест:</b> короткая полоса наискосок от правой вертикальной к левой. Конец на вертикальной без натяжения, рукой сведите мышцы к центру, середина 25–50%, второй конец на другой вертикальной без натяжения. Вторая полоса креста наискосок в другую сторону.</li><li><b>4. Средний крест</b> на уровне пупка, вплотную к нижнему, дырочкой на пупок.</li><li><b>5. Верхний крест</b> вплотную над средним.</li></ul></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>Вертикальные 0–10%, кресты 25–50% в середине.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Как у всех схем живота.</p></div></div></article>
+<article id="veer-zhivot"><div class="fig"><svg role="img" viewBox="0 0 300 330">
+<path class="skin" d="M70 10 C66 70 80 120 78 150 C76 190 44 220 42 270 L40 325 L260 325 L258 270 C256 220 224 190 222 150 C220 120 234 70 230 10 Z"/>
+<path class="bone2" d="M52 232 Q66 208 86 220 Q94 236 92 254 Q80 262 60 256 Z"/><path class="bone2" d="M248 232 Q234 208 214 220 Q206 236 208 254 Q220 262 240 256 Z"/>
+<path class="lig" d="M92 256 Q120 290 146 316 M208 256 Q180 290 154 316"/>
+<circle cx="150" cy="170" r="4" fill="#b08a72"/>
+<g class="node"><circle cx="106" cy="280" r="3.5"/><circle cx="120" cy="294" r="3.5"/><circle cx="194" cy="280" r="3.5"/><circle cx="180" cy="294" r="3.5"/></g>
+<path class="tail" d="M112 286 Q90 230 92 180 M114 286 Q108 220 118 160 M116 286 Q124 230 136 186 M118 286 Q136 250 144 210"/>
+<path class="tail" d="M188 286 Q210 230 208 180 M186 286 Q192 220 182 160 M184 286 Q176 230 164 186 M182 286 Q164 250 156 210"/>
+<rect class="base" x="102" y="280" width="26" height="14" rx="5" transform="rotate(40 115 287)"/><rect class="base" x="172" y="280" width="26" height="14" rx="5" transform="rotate(-40 185 287)"/>
+<text class="lbl" x="14" y="200">тазовая косточка</text><text class="lbl" x="120" y="322">пах</text>
+</svg></div><div class="txt"><h3>Живот: веер от отёка</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Отёчность и «тестообразность» низа живота. Уводит лимфу в паховые узлы.</p></div>
+<div><span class="k">Что нужно</span><p>2 полосы по 20–25 см. Каждую разрежьте вдоль на 4 хвоста шириной около 1,2 см, оставив 4–5 см с одного конца целыми (основание).</p></div>
+<div><span class="k">Поза</span><p>Лёжа на спине, под поясницу подушка, чтобы живот слегка прогнулся и кожа натянулась.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Основание без натяжения в паховой складке, внутри от тазовой косточки.</li><li>Хвосты веером вверх: к пупку, к середине живота, к боку. Не тяните, просто кладите на натянутую кожу.</li><li>Так же с другой стороны.</li><li>Если клеите вместе со схемой от диастаза: сначала диастаз, сверху веер.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–15%, почти без натяжения. Морщинки на коже после того, как встанете, это правильно.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Как у всех схем живота.</p></div></div></article>
+</section>
+<section class="zone" id="spina"><h2>Спина</h2>
+<article id="spina"><div class="fig"><svg role="img" viewBox="0 0 300 330">
+<path class="skin" d="M120 8 L180 8 L184 40 Q240 46 266 66 Q280 90 272 140 Q262 200 256 250 L262 325 L38 325 L44 250 Q38 200 28 140 Q20 90 34 66 Q60 46 116 40 Z"/>
+<path class="bone2" d="M70 80 Q100 70 128 84 L118 160 Q90 150 70 140 Z"/><path class="bone2" d="M230 80 Q200 70 172 84 L182 160 Q210 150 230 140 Z"/>
+<line x1="150" y1="40" x2="150" y2="320" stroke="#b39580" stroke-width="2" stroke-dasharray="3 5"/>
+<path class="tp" d="M58 62 L162 170"/><line class="an" x1="58" y1="62" x2="70" y2="74"/><line class="an" x1="150" y1="158" x2="162" y2="170"/>
+<path class="tp" d="M242 62 L138 170"/><line class="an" x1="242" y1="62" x2="230" y2="74"/><line class="an" x1="150" y1="158" x2="138" y2="170"/>
+<path class="tp" d="M132 312 L132 206"/><line class="an" x1="132" y1="312" x2="132" y2="298"/><line class="an" x1="132" y1="220" x2="132" y2="206"/>
+<path class="tp" d="M168 312 L168 206"/><line class="an" x1="168" y1="312" x2="168" y2="298"/><line class="an" x1="168" y1="220" x2="168" y2="206"/>
+<g class="n"><circle cx="42" cy="54" r="9"/><text x="42" y="58">1</text><circle cx="258" cy="54" r="9"/><text x="258" y="58">2</text><circle cx="112" cy="300" r="9"/><text x="112" y="304">3</text></g>
+<text class="lbl" x="196" y="120">лопатка</text><text class="lbl" x="176" y="262">поясница</text><text class="lbr" x="186" y="186">25%</text><text class="lbr" x="186" y="296">10–25%</text>
+</svg></div><div class="txt"><h3>Спина: лопатки и поясница</h3><div class="who"><span class="badge help">Только с помощником</span><span class="bnote">спину самой не видно и не достать</span></div>
+<div><span class="k">От чего</span><p><b>Галочка на лопатки</b> от сутулости и боли между лопатками, которая бывает от кормления и ношения ребёнка. <b>Поясница</b> от усталости и боли внизу спины. Клеит только помощник.</p></div>
+<div><span class="k">Что нужно</span><p>Лопатки: 2 целые полосы по 25–30 см. Поясница: 2 целые полосы по 20–25 см.</p></div>
+<div><span class="k">Поза</span><p><b>Лопатки:</b> сидя, обнять себя руками за плечи, спина округлена. <b>Поясница:</b> стоя, наклониться вперёд, руки на столе.</p></div>
+<div><span class="k">Как клеить</span><ul><li><b>1–2. Лопатки.</b> Якорь без натяжения на верхней части плеча. Полоса наискосок через лопатку к позвоночнику, 25%. Конец без натяжения рядом с позвоночником под лопаткой. Вторая полоса зеркально, концы сходятся галочкой.</li><li><b>3. Поясница.</b> Якорь на крестце сбоку от позвоночника, 2 пальца от него. Полоса вверх вдоль позвоночника, 10–25%, конец без натяжения на уровне нижних рёбер. Вторая полоса с другой стороны.</li><li>Когда выпрямитесь, на коже появятся складочки, так и должно быть.</li></ul></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>Лопатки 25%, поясница 10–25%, концы 0%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Острая боль в спине, онемение или боль, которая отдаёт в ногу: к врачу.</p></div></div></article>
+</section>
+<section class="zone" id="ruki"><h2>Руки</h2>
+<article id="ruki"><div class="fig"><svg viewBox="0 0 300 370" role="img" aria-label="Рука спереди: веер из подмышки на плечо и веер от локтевого сгиба на предплечье">
+<path class="skin" d="M10 10 L110 10 Q170 0 210 40 Q224 110 214 182 Q208 250 198 318 L160 318 Q156 250 150 188 Q140 130 128 84 Q118 74 104 76 L104 370 L10 370 Z"/>
+<path class="ln" d="M104 76 Q110 120 104 200 M150 188 Q180 196 210 186"/>
+<ellipse cx="179" cy="342" rx="24" ry="26" class="skin"/>
+<g class="node"><circle cx="122" cy="84" r="3.5"/><circle cx="114" cy="96" r="3.5"/><circle cx="158" cy="186" r="3.5"/></g>
+<path class="tail" d="M126 92 Q140 130 150 172 M128 90 Q160 120 176 176 M130 88 Q180 110 200 160 M128 84 Q170 50 196 50"/>
+<rect class="base" x="112" y="78" width="22" height="18" rx="5"/>
+<path class="tail" d="M168 196 Q164 250 166 306 M174 196 Q178 250 180 310 M180 196 Q192 250 192 306"/>
+<rect class="base" x="160" y="186" width="28" height="13" rx="5"/>
+<g class="n"><circle cx="96" cy="100" r="9"/><text x="96" y="104">1</text><circle cx="214" cy="200" r="9"/><text x="214" y="204">2</text></g>
+<text class="lbl" x="16" y="60">подмышка</text><path class="lead" d="M70 58 L112 82"/>
+<text class="lbl" x="218" y="60">плечо (дельта)</text>
+<text class="lbl" x="218" y="226">локтевой сгиб</text>
+<text class="lbl" x="208" y="316">запястье</text>
+<text class="lbl" x="16" y="200">бок</text>
+</svg></div><div class="txt"><h3>Руки и плечи: отёк</h3><div class="who"><span class="badge hard">Сложно одной</span><span class="bnote">плечо одной рукой клеить неудобно, предплечье можно самой</span></div>
+<div><span class="k">От чего</span><p>Отёк рук и кистей (кольца не налезают по утрам, руки затекают), тяжесть в плечах. Лимфа уходит в подмышку и к локтевому сгибу.</p></div>
+<div><span class="k">Что нужно</span><p>Плечо: полоса 25–30 см. Предплечье: полоса 20–25 см. Обе разрезать вдоль на 4 хвоста, основание 4–5 см целое.</p></div>
+<div><span class="k">Поза</span><p><b>Плечо:</b> поднимите руку и положите ладонь на затылок, локоть в сторону. <b>Предплечье:</b> рука прямая, ладонь вверх, кисть отогнуть вниз другой рукой.</p></div>
+<div><span class="k">Как клеить</span><ul><li><b>1. Плечо.</b> Основание без натяжения в подмышечной ямке.</li><li>Два хвоста по внутренней и передней стороне плеча вниз к локтю, один по наружной, один вверх через плечо (дельту) к ключице.</li><li><b>2. Предплечье.</b> Основание без натяжения на локтевом сгибе.</li><li>Хвосты веером вниз к запястью, на кисть не заходить.</li><li>Сначала плечо, потом предплечье. Потом другая рука.</li></ul></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–15%, кожа натянута позой.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Уплотнение или боль в подмышке (там бывает ткань груди при ГВ). Внезапный отёк одной руки с болью или покраснением: к врачу в тот же день.</p></div></div></article>
+</section>
+<section class="zone" id="nogi"><h2>Ноги</h2>
+<article id="bedra"><div class="fig"><svg role="img" viewBox="0 0 300 380">
+<path class="skin" d="M38 18 L262 18 Q272 80 262 150 Q252 250 236 345 L180 345 Q172 240 158 150 Q152 135 150 132 Q148 135 142 150 Q128 240 120 345 L64 345 Q48 250 38 150 Q28 80 38 18 Z"/>
+<path class="ln" d="M52 62 Q100 98 146 128 M248 62 Q200 98 154 128"/>
+<ellipse cx="92" cy="335" rx="20" ry="13" class="ln"/><ellipse cx="208" cy="335" rx="20" ry="13" class="ln"/>
+<g class="node"><circle cx="78" cy="80" r="3.5"/><circle cx="95" cy="91" r="3.5"/><circle cx="112" cy="102" r="3.5"/><circle cx="222" cy="80" r="3.5"/><circle cx="205" cy="91" r="3.5"/><circle cx="188" cy="102" r="3.5"/></g>
+<path class="tail" d="M88 98 Q60 170 52 260 M92 100 Q78 180 76 280 M98 104 Q100 190 98 290 M104 108 Q120 180 124 270"/>
+<rect class="base" x="80" y="86" width="30" height="16" rx="6" transform="rotate(33 95 94)"/>
+<path class="tailf" d="M212 98 Q240 170 248 260 M208 100 Q222 180 224 280 M202 104 Q200 190 202 290"/>
+<rect class="base" x="190" y="86" width="30" height="16" rx="6" transform="rotate(-33 205 94)" opacity=".45"/>
+<path class="vein" d="M176 170 q6 10 0 20 q-6 10 2 22 q6 10 -2 22"/><ellipse cx="178" cy="196" rx="8" ry="11" fill="rgba(123,79,160,.35)" stroke="#7b4fa0"/>
+<path class="vein" d="M214 240 l8 6 l-4 8 M226 220 l6 -6 l6 4 M200 270 l-5 8 l6 4"/>
+<path class="arr" d="M70 230 L80 140 M76 148 L80 140 L84 148"/>
+<text class="lbl" x="6" y="12">ваша правая нога</text><text class="lbl" x="200" y="12">левая (варикоз)</text>
+<text class="lbl" x="104" y="74">паховая складка</text>
+<text class="lbr" x="186" y="176" text-anchor="end">узел</text>
+<text class="lbl" x="232" y="300">звёздочки</text>
+</svg></div><div class="txt"><h3>Бёдра: отёк и «апельсиновая корка»</h3><div class="who"><span class="badge hard">Сложно одной</span><span class="bnote">переднюю сторону можно самой, наружную лучше с помощником</span></div>
+<div><span class="k">От чего</span><p>Отёчность бёдер. Тейп на несколько дней сглаживает кожу, но целлюлит не убирает: сильнее работают ходьба, силовые на ноги, вода и меньше соли.</p></div>
+<div><span class="k">Что нужно</span><p>На одно бедро 1–2 полосы по 25–30 см, каждая разрезана вдоль на 4 хвоста, основание 4–5 см целое.</p></div>
+<div><span class="k">Поза</span><p><b>Передняя сторона:</b> встаньте в выпад. <b>Клеите на ту ногу, что сзади</b>: она прямая, стопа на носке, таз подать вперёд. Так растягивается передняя сторона бедра. <b>Наружная сторона («галифе»):</b> стоя, заведите эту ногу назад за опорную (ноги крестом) и наклонитесь корпусом в сторону опорной ноги. Удобнее с помощником.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Основание без натяжения в паховой складке отставленной ноги. Для наружной стороны ближе к тазовой косточке.</li><li>Хвосты веером вниз по передней (или наружной) стороне бедра, до колена не доходить на ладонь, на коленную чашечку не клеить.</li><li>Не тяните хвосты, кладите на натянутую позой кожу.</li><li>Разотрите ладонью и встаньте ровно: появятся «волны».</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–15%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p><b>Левая нога:</b> не на узел и не на звёздочки, сначала спросите флеболога; при варикозе лучше компрессионный трикотаж. Отёк одной ноги с болью, покраснением, жаром: к врачу в тот же день.</p></div></div></article>
+<article id="ikry"><div class="fig"><svg role="img" viewBox="0 0 300 300">
+<path class="skin" d="M70 10 L170 10 Q182 70 174 120 Q168 170 150 230 L146 270 L180 280 L180 295 L100 295 L102 230 Q80 160 74 110 Q66 60 70 10 Z"/>
+<path class="ln" d="M80 30 Q120 40 162 30"/>
+<g class="node"><circle cx="104" cy="28" r="3.5"/><circle cx="122" cy="32" r="3.5"/><circle cx="140" cy="30" r="3.5"/></g>
+<path class="tail" d="M112 34 Q84 110 104 230 M118 36 Q108 130 116 250 M124 36 Q138 130 132 250 M130 34 Q166 110 146 230"/>
+<rect class="base" x="104" y="26" width="34" height="14" rx="5"/>
+<text class="lbl" x="176" y="34">подколенная ямка</text><text class="lbl" x="186" y="282">пятка</text><text class="lbl" x="6" y="140">вид сзади</text>
+</svg></div><div class="txt"><h3>Икры и лодыжки: вечерний отёк</h3><div class="who"><span class="badge help">Только с помощником</span><span class="bnote">заднюю сторону голени самой не наклеить ровно</span></div>
+<div><span class="k">От чего</span><p>Вечерние отёки голеней и щиколоток, тяжесть в ногах.</p></div>
+<div><span class="k">Что нужно</span><p>Полоса 25–30 см, разрезана вдоль на 4 хвоста, основание 4–5 см целое.</p></div>
+<div><span class="k">Поза</span><p>Лёжа на животе, нога прямая, стопа свисает с края кровати, носок тянуть на себя. Клеит помощник.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Основание без натяжения в подколенной ямке.</li><li>Хвосты веером вниз по икре к щиколотке. Ахиллово сухожилие и косточки лодыжки обходить.</li><li>Разотрите ладонью.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–15%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Левая нога: как с бёдрами, сначала флеболог. При варикозе от вечерних отёков надёжнее компрессионные гольфы.</p></div></div></article>
+</section>
+<section class="zone" id="grud"><h2>Декольте</h2>
+<article id="dekolte"><div class="fig"><svg role="img" viewBox="0 0 300 330">
+<path class="skin" d="M120 20 L120 60 Q70 70 40 90 Q20 110 22 170 L28 320 L272 320 L278 170 Q280 110 260 90 Q230 70 180 60 L180 20 Z"/>
+<path class="ln" d="M60 92 Q100 84 144 98 M240 92 Q200 84 156 98"/>
+<path d="M50 220 Q60 290 120 300 Q148 296 150 250 M250 220 Q240 290 180 300 Q152 296 150 250" fill="rgba(201,173,152,.18)" stroke="#c9ad98" stroke-width="1.5" stroke-dasharray="5 4"/>
+<g class="node"><circle cx="38" cy="160" r="3.5"/><circle cx="34" cy="176" r="3.5"/><circle cx="262" cy="160" r="3.5"/><circle cx="266" cy="176" r="3.5"/></g>
+<path class="tail" d="M40 168 Q80 130 132 118 M40 170 Q90 150 138 146 M40 172 Q90 178 138 176 M40 174 Q80 200 120 205"/><rect class="base" x="28" y="158" width="18" height="24" rx="5"/>
+<path class="tail" d="M260 168 Q220 130 168 118 M260 170 Q210 150 162 146 M260 172 Q210 178 162 176 M260 174 Q220 200 180 205"/><rect class="base" x="254" y="158" width="18" height="24" rx="5"/>
+<text class="lbl" x="58" y="152" >подмышка</text>
+<text class="lbr" x="150" y="270" text-anchor="middle">грудь: не клеить</text>
+<text class="lbl" x="150" y="80" text-anchor="middle">ключицы</text>
+</svg></div><div class="txt"><h3>Декольте</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Отёчность верхней части груди и декольте. Лимфа уходит в подмышечные узлы.</p></div>
+<div><span class="k">Что нужно</span><p>2 полосы по 20 см, каждая разрезана вдоль на 4 хвоста, основание 4–5 см целое.</p></div>
+<div><span class="k">Поза</span><p>Сидя или стоя, руку на стороне наклейки заведите за голову.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Основание без натяжения в подмышке.</li><li>Хвосты к грудине по верхней части груди, <b>выше молочной железы</b>.</li><li>Так же с другой стороны.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–10%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>3–5 дней, потом 1–2 дня перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Пока кормите: не на грудь и не на ареолу. Покраснение, уплотнение или боль в груди: снять, к врачу или Hebamme.</p></div></div></article>
+</section>
+<section class="zone" id="sheya"><h2>Шея</h2>
+<article id="sheya"><div class="fig"><svg role="img" viewBox="0 0 300 330">
+<path class="skin" d="M150 10 C205 10 222 50 220 95 C218 135 196 160 150 166 C104 160 82 135 80 95 C78 50 95 10 150 10 Z"/>
+<path class="skin" d="M102 140 L96 262 L20 300 L20 330 L280 330 L280 300 L204 262 L198 140 Q150 175 102 140 Z"/>
+<path class="ln" d="M40 300 Q90 278 140 292 M260 300 Q210 278 160 292 M84 152 Q150 186 216 152"/>
+<g class="node"><circle cx="112" cy="282" r="3.5"/><circle cx="188" cy="282" r="3.5"/><circle cx="104" cy="158" r="3.5"/><circle cx="196" cy="158" r="3.5"/></g>
+<path class="tail" d="M112 282 Q98 220 100 160 M114 282 Q112 220 118 168 M118 282 Q128 230 138 172 M120 282 Q140 240 150 176"/>
+<path class="tail" d="M188 282 Q202 220 200 160 M186 282 Q188 220 182 168 M182 282 Q172 230 162 172 M180 282 Q160 240 150 176"/>
+<rect class="base" x="100" y="276" width="26" height="14" rx="5"/><rect class="base" x="174" y="276" width="26" height="14" rx="5"/>
+<text class="lbl" x="214" y="318">ключица</text><text class="lbl" x="206" y="150">угол челюсти</text>
+</svg></div><div class="txt"><h3>Шея веером</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Отёк шеи и под подбородком. Лимфа уходит к ключице. Хорошо сочетается с лимфой на лице.</p></div>
+<div><span class="k">Что нужно</span><p>Тонкий тейп для лица или половина ленты 5 см вдоль (2,5 см), 15 см. Разрезать на 3–4 хвоста по 0,6–1 см, основание 3 см.</p></div>
+<div><span class="k">Поза</span><p>Сидя, голову запрокинуть и повернуть в сторону, противоположную наклейке.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Основание без натяжения в ямке над ключицей.</li><li>Хвосты веером вверх по шее до линии челюсти.</li><li>Потом другая сторона.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–10%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>Ночь или до 2 дней, потом 1 день перерыв.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Раздражение кожи, увеличенные болезненные узлы на шее: к врачу.</p></div></div></article>
+<article id="venera"><div class="fig"><svg role="img" viewBox="0 0 300 330">
+<path class="skin" d="M150 10 C205 10 222 50 220 95 C218 135 196 160 150 166 C104 160 82 135 80 95 C78 50 95 10 150 10 Z"/>
+<path class="skin" d="M102 140 L96 262 L20 300 L20 330 L280 330 L280 300 L204 262 L198 140 Q150 175 102 140 Z"/>
+<path class="ln" d="M40 300 Q90 278 140 292 M260 300 Q210 278 160 292"/>
+<path d="M100 196 Q150 212 200 196 M99 230 Q150 246 201 230" stroke="#b9917a" stroke-width="1.6" fill="none"/>
+<path class="tps" d="M104 196 Q122 203 138 206"/><path class="tps" d="M162 206 Q178 203 196 196"/><path class="tps" d="M103 230 Q124 238 138 240"/><path class="tps" d="M162 240 Q176 238 197 230"/><text class="lbl" x="128" y="290">середина свободна</text>
+<text class="lbl" x="208" y="200">складка 1</text><text class="lbl" x="208" y="234">складка 2</text>
+</svg></div><div class="txt"><h3>Кольца Венеры</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Горизонтальные складки на шее. Тейп держит кожу ровной ночью, утром складки мягче. Эффект временный.</p></div>
+<div><span class="k">Что нужно</span><p>Полоски 1–1,5 см шириной (ленту 5 см режьте вдоль на 3–4 части), по 5–7 см: на каждую складку две половинки, справа и слева.</p></div>
+<div><span class="k">Поза</span><p>Сидя или лёжа, голову запрокинуть, чтобы складка разгладилась.</p></div>
+<div><span class="k">Как клеить</span><ol><li>Положите полоску по складке от бока шеи к середине.</li><li><b>Середину шеи над горлом, 2–3 см, оставьте свободной.</b> Если заклеить её, давит и появляется ощущение, что душит.</li><li>Вторую половинку с другой стороны.</li><li><b>Без натяжения</b>, просто прижать. Каждую складку отдельно.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>На ночь 6–8 часов, 3–4 раза в неделю.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Раздражение, прыщи. Давит или трудно глотать: снимите и клейте короче, дальше от середины.</p></div></div></article>
+</section>
+<section class="zone" id="lico"><h2>Лицо</h2>
+<article id="lico-limfa"><div class="fig"><svg role="img" viewBox="0 0 300 330">
+<path class="skin" d="M150 20 C220 20 240 80 238 140 C236 200 210 250 150 262 C90 250 64 200 62 140 C60 80 80 20 150 20 Z"/>
+<path class="skin" d="M105 245 L100 300 L40 320 L260 320 L200 300 L195 245 Q150 268 105 245 Z"/>
+<path class="ln" d="M60 130 Q48 150 62 180 M240 130 Q252 150 238 180"/>
+<path class="ln" d="M108 128 Q122 120 136 128 Q122 134 108 128 M164 128 Q178 120 192 128 Q178 134 164 128 M150 140 L144 180 Q150 186 156 180 M128 210 Q150 222 172 210"/>
+<path class="ln" d="M70 318 Q105 300 140 312 M230 318 Q195 300 160 312"/>
+<g class="node"><circle cx="70" cy="190" r="3.5"/><circle cx="96" cy="236" r="3.5"/><circle cx="104" cy="300" r="3.5"/><circle cx="230" cy="190" r="3.5"/><circle cx="196" cy="300" r="3.5"/></g>
+<path class="tail" d="M100 302 Q88 260 80 212"/><rect class="base" x="94" y="296" width="22" height="13" rx="5"/>
+<path class="tail" d="M76 196 Q100 160 120 148 M76 198 Q106 176 132 168 M78 202 Q108 196 134 200 M80 206 Q110 236 140 236"/>
+<rect class="base" x="64" y="190" width="18" height="18" rx="5"/>
+<path class="tailf" d="M224 196 Q200 160 180 148 M224 198 Q194 176 168 168 M222 202 Q192 196 166 200 M220 206 Q190 236 160 236"/>
+<path class="arr" d="M150 236 L118 248 L100 285 M100 277 L100 285 L106 280"/>
+<g class="n"><circle cx="120" cy="298" r="9"/><text x="120" y="302">1</text><circle cx="52" cy="200" r="9"/><text x="52" y="204">2</text></g>
+<text class="lbl" x="200" y="296">ключица</text>
+</svg></div><div class="txt"><h3>Лицо: лимфа от уха</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Утренний отёк лица и под глазами. Физиотерапевтическая схема. Лимфа уходит к уху и вниз по шее к ключице.</p></div>
+<div><span class="k">Что нужно</span><p>Тонкий тейп для лица. Шея: узкая полоска 1 см, 15 см. Лицо: полоса 15 см, разрезанная на 4–5 хвостов по 0,5–1 см, основание 2–3 см.</p></div>
+<div><span class="k">Поза</span><p>Лёжа или сидя. Для шеи голову повернуть в другую сторону. Для лица кожу щеки слегка оттянуть пальцами к уху.</p></div>
+<div><span class="k">Как клеить</span><ul><li><b>1. Шея:</b> основание над ключицей, полоска вверх по боку шеи к углу челюсти.</li><li><b>2. Лицо:</b> основание у мочки уха. Хвосты: к подбородку, к носогубке, по скуле, под глаз не ближе 1 см к ресницам.</li><li>Потом другая сторона.</li></ul></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0–10%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>На ночь 6–8 часов, 3–4 раза в неделю.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Прыщи, ранки, после пилинга, ретинола и кислот. Не возле глаз.</p></div></div></article>
+<article id="lico-kosmetika"><div class="fig"><svg role="img" viewBox="0 0 300 290"><path class="skin" d="M150 20 C220 20 240 80 238 140 C236 200 210 250 150 262 C90 250 64 200 62 140 C60 80 80 20 150 20 Z"/>
+<path class="ln" d="M60 130 Q48 150 62 180 M240 130 Q252 150 238 180"/>
+<path class="ln" d="M108 128 Q122 120 136 128 Q122 134 108 128 M164 128 Q178 120 192 128 Q178 134 164 128 M104 112 Q120 104 138 110 M162 110 Q180 104 196 112 M150 140 L144 180 Q150 186 156 180 M128 210 Q150 222 172 210"/>
+<path class="tps" d="M100 70 L200 70"/><path class="tps" d="M100 88 L200 88"/>
+<path class="tps" d="M141 100 L159 122 M159 100 L141 122"/>
+<path class="tps" d="M226 112 L204 126 M228 128 L204 132 M226 144 L204 138"/><rect class="base" x="224" y="110" width="10" height="40" rx="4"/>
+<path class="tps" d="M74 112 L96 126 M72 128 L96 132 M74 144 L96 138"/><rect class="base" x="66" y="110" width="10" height="40" rx="4"/>
+<path class="tps" d="M138 178 Q126 196 124 214 M162 178 Q174 196 176 214"/>
+<path class="tp" d="M140 248 Q100 236 76 188"/><line class="an" x1="80" y1="196" x2="74" y2="184"/><line class="an" x1="140" y1="248" x2="128" y2="245"/>
+<path class="tp" d="M160 248 Q200 236 224 188"/><line class="an" x1="220" y1="196" x2="226" y2="184"/><line class="an" x1="160" y1="248" x2="172" y2="245"/>
+<g class="n"><circle cx="210" cy="64" r="9"/><text x="210" y="68">а</text><circle cx="168" cy="96" r="9"/><text x="168" y="100">б</text><circle cx="246" cy="130" r="9"/><text x="246" y="134">в</text><circle cx="190" cy="196" r="9"/><text x="190" y="200">г</text><circle cx="240" cy="200" r="9"/><text x="240" y="204">д</text></g>
+</svg></div><div class="txt"><h3>Лицо: косметический тейп</h3><div class="who"><span class="badge self">Можно самой</span></div>
+<div><span class="k">От чего</span><p>Мимические морщины: лоб, межбровье, гусиные лапки, носогубки, овал. Тейп не даёт коже складываться ночью. Эффект на часы.</p></div>
+<div><span class="k">Что нужно</span><p>Тонкий тейп для лица, полоски 1 см. Лоб 10–12 см, межбровье 2 по 4 см, гусиные лапки 6 см с 3 хвостами, носогубки 5 см, овал 12–15 см (2 см шириной).</p></div>
+<div><span class="k">Поза</span><p>Лёжа. Каждую зону перед наклейкой разгладить пальцами свободной руки.</p></div>
+<div><span class="k">Как клеить</span><ol><li><b>а) Лоб:</b> 2 горизонтальные полоски поверх морщин. Пальцами разгладить лоб вверх, без натяжения.</li><li><b>б) Межбровье:</b> маленький крест. Брови развести пальцами в стороны.</li><li><b>в) Гусиные лапки:</b> основание на виске, 3 тонких хвоста к уголку глаза, не ближе 1 см к ресницам.</li><li><b>г) Носогубки:</b> полоска по складке от крыла носа к углу рта, кожу щеки оттянуть к уху.</li><li><b>д) Овал:</b> якорь на подбородке, полоса вдоль челюсти, середина 10–15%, конец перед ухом без натяжения.</li></ol></div>
+<div class="row2"><div class="pill"><span class="k">Натяжение</span><span>0%, овал 10–15%.</span></div><div class="pill"><span class="k">Сколько носить</span><span>На ночь 6–8 часов, 3–4 раза в неделю. Можно чередовать с лимфой от уха.</span></div></div>
+<div><span class="k no">Не клеить</span><p>Прыщи, ранки, после пилинга, ретинола и кислот.</p></div></div></article>
+</section>
+<p style="color:var(--muted);font-size:.95rem">Схемы собраны по типовым методикам кинезиотейпирования в послеродовой физиотерапии и лимфодренаже. Натяжение и места крепления физиотерапевт может подобрать иначе, если покажете ему живот вживую.</p></main></body></html>
