@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шнуровка от диастаза</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@600;700&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>/* Layout: справочник одной колонкой; меню зон, сводная таблица, затем карточки схем: рисунок + пошаговый текст */
+:root{--bg:#f3f5f2;--paper:#ffffff;--fg:#1f2b27;--muted:#5b6964;--line:#d3dbd7;--accent:#1d6b61;--chip:#e3ece8;--warn:#a4482c;--warn-bg:#fbeee8;--fig:#fffdf8;--ok:#2c6e3a;--ok-bg:#e2f0e3;--mid:#8a5a00;--mid-bg:#fbefd5;
+--display:"Alegreya",Georgia,serif;--body:"Alegreya Sans","Segoe UI",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--paper:#1a2220;--fg:#e3ebe7;--muted:#9fb2ab;--line:#2f3d38;--accent:#6cc7b9;--chip:#24312d;--warn:#f0a084;--warn-bg:#2e1f1a;--fig:#fffdf8;--ok:#8fd49b;--ok-bg:#1d3022;--mid:#f0c46a;--mid-bg:#33290f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121816;--paper:#1a2220;--fg:#e3ebe7;--muted:#9fb2ab;--line:#2f3d38;--accent:#6cc7b9;--chip:#24312d;--warn:#f0a084;--warn-bg:#2e1f1a;--fig:#fffdf8;--ok:#8fd49b;--ok-bg:#1d3022;--mid:#f0c46a;--mid-bg:#33290f;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(2rem,5vw,2.8rem)}h2{font-size:1.6rem}h3{font-size:1.25rem}
+p{margin:0;max-width:68ch}ul,ol{margin:0;padding-left:1.25em;display:grid;gap:6px}
+a{color:var(--accent)}
+.lead{color:var(--muted);font-size:1.1rem}
+nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;padding-block:10px;margin-block:-10px;border-bottom:1px solid var(--line)}
+nav.bar a{text-align:center;padding:7px 0;font-size:.84rem;white-space:nowrap}
+@media (min-width:760px){nav.bar{grid-template-columns:repeat(9,minmax(0,1fr))}}
+nav.bar::-webkit-scrollbar{display:none}
+nav.bar a{flex:0 0 auto}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
+.zone,article,#pravila,#svodka{scroll-margin-top:72px}
+.who{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.badge{display:inline-block;font-size:.85rem;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.badge.self{background:var(--ok-bg);color:var(--ok)}.badge.hard{background:var(--mid-bg);color:var(--mid)}.badge.help{background:var(--warn-bg);color:var(--warn)}
+.bnote{color:var(--muted);font-size:.92rem}
+nav a{background:var(--chip);color:var(--fg);text-decoration:none;padding:6px 14px;border-radius:999px;font-weight:500}
+nav a:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.rules>*{min-width:0}
+.warnbox{background:var(--warn-bg);border:1px solid var(--warn);border-radius:12px;padding:12px 14px;display:grid;gap:6px}
+.warnbox h3{color:var(--warn)}
+.tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:500;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase}
+.zone{display:grid;gap:18px;scroll-margin-top:12px}
+.zone>h2{border-bottom:2px solid var(--accent);padding-bottom:6px}
+article{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:minmax(260px,5fr) 7fr;gap:20px;scroll-margin-top:12px}
+article>*{min-width:0}
+@media (max-width:720px){article{grid-template-columns:1fr}}
+.wide{grid-template-columns:1fr}.wide .fig{max-width:760px;justify-self:center;width:100%}
+.fig{background:var(--fig);border-radius:10px;padding:8px;align-self:start}
+.fig svg{width:100%;height:auto;display:block}
+.txt{display:grid;gap:12px;align-content:start}
+.k{font-size:.82rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+.pill{background:var(--chip);border-radius:10px;padding:8px 10px;display:grid;gap:2px}
+.no{color:var(--warn)}
+
+.fig .skin{fill:#f3e3d5;stroke:#c9ad98;stroke-width:2}.fig .bone,.fig .bone2{fill:#fbf6ea;stroke:#9c8a70;stroke-width:1.6}
+.fig .ribl{stroke:#c3b394;stroke-width:1.3;fill:none}.fig .mus{fill:rgba(200,95,85,.22);stroke:#b9675c;stroke-width:1.5}
+.fig .tend{stroke:#c98a80;stroke-width:1.2}.fig .lig{stroke:#8a7a62;stroke-width:1.6;stroke-dasharray:5 3;fill:none}
+.fig .gap{fill:rgba(230,150,40,.35)}.fig .lead{stroke:#3b4844;stroke-width:1;fill:none}
+.fig .lbl{font:12px "Alegreya Sans",Arial,sans-serif;fill:#22302b}.fig .lbs{font:10.5px "Alegreya Sans",Arial,sans-serif;fill:#5d6b66}
+.fig .lbr{font:bold 11px "Alegreya Sans",Arial,sans-serif;fill:#a4482c}.fig .pc{fill:#a4482c;font:bold 11px "Alegreya Sans",Arial,sans-serif}
+.fig .dot{fill:#d2452c}.fig .tp{stroke:rgba(47,143,131,.62);stroke-width:15;stroke-linecap:round;fill:none}
+.fig .tps{stroke:rgba(47,143,131,.62);stroke-width:8;stroke-linecap:round;fill:none}.fig .an{stroke:#1d5d55;stroke-width:15;stroke-linecap:round}
+.fig .n circle{fill:#e2703a}.fig .n text{fill:#fff;font:bold 11px Arial,sans-serif;text-anchor:middle}
+.fig .faint{opacity:.75}.fig .ln{stroke:#c9ad98;stroke-width:1.5;fill:none}.fig .node{fill:#7a9a3a}.fig .base{fill:#1d5d55}
+.fig .tail{stroke:rgba(199,106,138,.75);stroke-width:5;stroke-linecap:round;fill:none}
+.fig .tailf{stroke:rgba(199,106,138,.35);stroke-width:5;stroke-linecap:round;fill:none;stroke-dasharray:6 5}
+.fig .vein{stroke:#7b4fa0;stroke-width:1.6;fill:none}.fig .arr{stroke:#2b6fb0;stroke-width:1.6;fill:none}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.95rem}
+.sw{display:inline-block;width:28px;height:10px;border-radius:5px;vertical-align:middle;margin-right:6px}
+
+.figs2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media (max-width:640px){.figs2{grid-template-columns:1fr}}
+.fig img{width:100%;height:auto;display:block;border-radius:6px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:640px){.two{grid-template-columns:1fr}}.two>*{min-width:0}
+.okbox{background:var(--ok-bg);border:1px solid var(--ok);border-radius:12px;padding:12px 14px;display:grid;gap:6px}.okbox h3{color:var(--ok)}
+</style>
+</head><body>
+<main class="wrap">
+<header style="display:grid;gap:12px"><h1>Шнуровка от диастаза</h1>
+<p class="lead">Тейп на живот, который держит щель между прямыми мышцами по всей длине: две вертикальные полосы по краям мышц и три креста между ними, как шнуровка на корсете. Лента 5 см, кресты удобнее клеит помощник.</p>
+<div class="legend"><span><span class="sw" style="background:#2670ce"></span>1–2 вертикальные, основа, 0–10%</span><span><span class="sw" style="background:#e83a80"></span>3–5 кресты, середина 25–50%, концы 0%</span></div>
+</header>
+
+<section class="panel" id="shema"><h2>Где клеить</h2>
+<div class="figs2"><div class="fig"><img src="anatomiya-orientiry.png" alt="Ориентиры на животе"></div><div class="fig"><img src="anatomiya-shnurovka.png" alt="Шнуровка на анатомии"></div></div>
+<ul>
+<li><b>Ориентируйтесь по костям,</b> а не по пупку: кончик грудины, рёберная дуга, тазовые косточки, лобковая кость.</li>
+<li><b>Найти край мышцы:</b> лёжа приподнимите голову, как в начале скручивания. Напрягутся два валика, их наружный край и есть линия вертикальной полосы.</li>
+<li>Кресты ложатся <b>между вертикальными</b>, их концы клеятся прямо на синие полосы. Средний крест с дырочкой под пупок.</li>
+</ul></section>
+
+<section class="panel" id="shagi"><h2>По шагам</h2>
+<div class="figs2"><div class="fig"><img src="foto-shag-1.png" alt="Шаг 1"></div><div class="fig"><img src="foto-shag-2.png" alt="Шаг 2"></div><div class="fig"><img src="foto-shag-3.png" alt="Шаг 3"></div><div class="fig"><img src="foto-shag-4.png" alt="Шаг 4"></div></div>
+<p class="bnote">Стрелки на шаге 2: ладонями сведите мышцы к центру, пока клеите середину креста. Нижние концы заходят под резинку белья только на фото, на деле они кончаются за 2 пальца до паховой складки.</p>
+</section>
+
+<section class="panel" id="kak"><h2>Как клеить</h2>
+<div class="facts">
+<div class="pill"><span class="k">Что нужно</span><span>2 полосы по 25–30 см и 6 полос по 15–18 см. Уголки скруглить, в 2 полосах среднего креста вырезать дырочку под пупок.</span></div>
+<div class="pill"><span class="k">Поза</span><span>Лёжа на спине, колени согнуты, стопы на полу. Клеить на выдохе, живот мягко втянут.</span></div>
+<div class="pill"><span class="k">Натяжение</span><span>Вертикальные 0–10%. Кресты: середина 25–50%, концы без натяжения.</span></div>
+<div class="pill"><span class="k">Носить</span><span>3–5 дней, затем перерыв 1–2 дня.</span></div>
+</div>
+<ol>
+<li><b>1–2. Вертикальные.</b> По наружному краю каждой прямой мышцы, от нижних рёбер вниз. Нижний конец за 2 пальца до паховой складки, внутри от тазовой косточки. Кладите почти без натяжения: это основа для крестов.</li>
+<li><b>3. Нижний крест.</b> Первая полоса наискосок от правой вертикальной к левой. Конец на вертикальной без натяжения, ладонями сведите мышцы к центру, середину натяните на 25–50%, второй конец на другой вертикальной без натяжения. Вторая полоса креста наискосок в другую сторону.</li>
+<li><b>4. Средний крест</b> на уровне пупка, вплотную к нижнему, дырочкой на пупок.</li>
+<li><b>5. Верхний крест</b> вплотную над средним, не выше рёберной дуги.</li>
+<li>Растереть всю шнуровку ладонью 20 секунд, чтобы клей прогрелся. Через 30–60 минут можно в душ.</li>
+</ol>
+<div class="okbox"><h3>Что делает шнуровка</h3><ul>
+<li>Кресты мягко стягивают края прямых мышц к середине и разгружают белую линию, пока она восстанавливается.</li>
+<li>Лента напоминает телу держать живот, и вы реже его «отпускаете».</li>
+<li>Щель сводят упражнения на глубокие мышцы живота и тазовое дно. Тейп помогает им, но один не закрывает диастаз.</li>
+</ul></div>
+</section>
+
+<section class="warnbox" id="nelzya"><h3>Когда не клеить и к врачу</h3><ul>
+<li>Бугорок или шишка у пупка или по белой линии при напряжении, щель шире 2–3 пальцев: сначала к гинекологу или физиотерапевту (возможна грыжа).</li>
+<li>Свежий шов после кесарева, ранки, сыпь, раздражение кожи, аллергия на пластырь (тест: кусочек на сутки).</li>
+<li>Зуд, жжение, пузыри: снять сразу. Покраснение дольше часа после снятия: пропустить 2–3 дня.</li>
+<li>Боль в животе, температура, сильное вздутие: к врачу, тейп тут не поможет.</li>
+</ul></section>
+
+<section class="panel" id="svodka"><h2>Сводка</h2><div class="tbl"><table><thead><tr><th>Полоса</th><th>Длина</th><th>Где</th><th>Натяжение</th></tr></thead><tbody>
+<tr><td>1–2 вертикальные</td><td>25–30 см</td><td>наружный край прямых мышц, от рёбер вниз</td><td>0–10%</td></tr>
+<tr><td>3 нижний крест</td><td>2 × 15–18 см</td><td>низ живота, между вертикальными</td><td>середина 25–50%</td></tr>
+<tr><td>4 средний крест</td><td>2 × 15–18 см</td><td>на пупке, с дырочкой</td><td>середина 25–50%</td></tr>
+<tr><td>5 верхний крест</td><td>2 × 15–18 см</td><td>над пупком, до рёбер</td><td>середина 25–50%</td></tr>
+</tbody></table></div><p class="bnote">Носить 3–5 дней, перерыв 1–2 дня. Снимать медленно, по росту волос, можно смочить маслом.</p></section>
+</main></body></html>
